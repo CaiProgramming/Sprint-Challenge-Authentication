@@ -1,5 +1,6 @@
 const axios = require("axios");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const { authenticate } = require("../auth/authenticate");
 const db = require("./routeModel");
 const secret = process.env.JWT_SECRET;
@@ -27,10 +28,11 @@ function register(req, res) {
 
 function login(req, res) {
   let { username, password } = req.body;
+
   db.findBy({ username })
     .then(data => {
-      if (data && bcrypt.compareSync(data.password, hash)) {
-        const token = jwt.sign({ sub: user.id }, config.secret);
+      if (data && bcrypt.compareSync(password, data.password)) {
+        let token = jwt.sign({ sub: data.id }, secret);
         return res.status(200).json({ token });
       } else {
         return res.status(401).json("Invalid Credentials");

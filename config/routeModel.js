@@ -6,7 +6,11 @@ module.exports = {
 };
 
 function findBy(user) {
-  return db.table("users").where(user);
+  return db
+    .select()
+    .table("users")
+    .where(user)
+    .first();
 }
 function add(user) {
   return db.table("users").insert(user);
