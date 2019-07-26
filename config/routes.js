@@ -22,7 +22,7 @@ function register(req, res) {
       res.status(201).json(`Thank you for joining us ${req.body.username}`);
     })
     .catch(data => {
-      res.status(500).json(data);
+      res.status(400).json("please provide valid data");
     });
 }
 
